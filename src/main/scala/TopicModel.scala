@@ -1,21 +1,33 @@
 /*  
     Three Topics: (1) Responsiveness (UI slow, quick, smooth), 
-                 (2) Battery Life (power, shut down)
-                 (3) Others
+                  (2) Battery Life (power, shut down)
+                  (3) Others
 
-    * Get a corpus of documents where each document is a customer post.
+    * Get a corpus of documents where each document is a customer review post.
  
     * Stop words: words that we do not want to convert to features because they
                   are not particularly useful.
 
-      We want to clean out these stopwords.
-
+                  We want to clean out these stopwords.
 
     LSA: 
+        
+        * term-by-document matrix: 
+            a matrix X where m is the number of 
+            documents, and n is the number of terms
 
-        input matrix: a matrix where m is the number of documents, and n is
-                      is the number of terms
+        * single-value-decomposition: 
+            X = U*S*Vt
 
+            U: m x k matrix where the rows will be documents and the 
+               columns be 'concept'
+
+            S: k x k matrix where the elements are the amount of
+               variation captured by each concept
+
+            V: n x k matrix where the rows will be terms and
+               columns be 'concept'
+        
 */
 
 
