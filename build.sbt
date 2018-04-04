@@ -38,6 +38,8 @@ libraryDependencies ++= Seq(
 )
 
 
+libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "2.1.0"
+
 // "org.typelevel" %% "cats-core" % "1.0.1"
 
 // You can use Scaladex, an index of all known published Scala libraries. There,
