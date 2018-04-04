@@ -40,16 +40,19 @@ object Crawl {
   def getReviewsFromFile() : List[String] = {
 
 
-    val original_file = new File(getClass.getClassLoader.getResource("reviews.txt").getPath)
+    // val original_file = new File(getClass.getClassLoader.getResource("reviews.txt").getPath)
 
-    val original_lines = Source.fromFile(original_file).getLines()
+    // val original_lines = Source.fromFile(original_file).getLines()
+    val original_lines = Source.fromFile("./src/main/resources/reviews.txt").getLines()
+
 
     var lines = List[String]()
 
     for (line <- original_lines) {
       println(line)
       if (line.length > 1) {
-        lines :+ line
+        // lines :+ line
+        lines ::= line
       }
     }
 
