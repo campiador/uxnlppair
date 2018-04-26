@@ -1,0 +1,7 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/Harry/Desktop/NLP/groupProject/uxnlppair/src/main/scala/TopicModel.scala:96:14: not found: value number[0m
+[0m[[0m[31merror[0m] [0m[0mBigDecimal(((number).toDouble) / 1000000).setScale(1, BigDecimal.RoundingMode.DOWN).toDouble[0m
+[0m[[0m[31merror[0m] [0m[0m             ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/Harry/Desktop/NLP/groupProject/uxnlppair/src/main/scala/TopicModel.scala:97:12: not found: value number[0m
+[0m[[0m[31merror[0m] [0m[0mBigDecimal(number).setScale(1, BigDecimal.RoundingMode.DOWN).toDouble[0m
+[0m[[0m[31merror[0m] [0m[0m           ^[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

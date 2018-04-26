@@ -13,4 +13,8 @@ object Util {
 
     }
 
+    def roundToTwoDecimalDigits(num: Double) : Double = {
+        BigDecimal(num).setScale(2, BigDecimal.RoundingMode.DOWN).toDouble
+    }
+
 }
