@@ -1,1 +1,0 @@
-/home/behnam/tufts/nlp/project/nltk_stop_words.txt
