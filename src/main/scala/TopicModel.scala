@@ -31,8 +31,11 @@
 */
 
 
+
+import TopicModel.Occurrence
+
 import scala.math._
-import breeze.linalg._
+import breeze.linalg.{DenseMatrix, _}
 import breeze.optimize._
 
 object TopicModel {
@@ -144,8 +147,68 @@ object TopicModel {
 
     }
 
-    def greetFromTopicModel () {
+    def greetFromTopicModel() {
         println("Greeting from TopicModel")
+    }
+
+
+//    Code to reduce the rank of a matrix through SVD decomposition
+    def svd_rank_reduce_and_return_error(actual_matrix: DenseMatrix[Occurrence], reduced_rank: Int)  = {
+        val A = actual_matrix
+        val svdA = svd(A)
+
+        val original_rank = rank(A)
+
+        val U2 = svdA.U
+
+        val S = svdA.S
+        val S2 = svdA.S(0 to reduced_rank - 1)
+
+        val Vt = svdA.Vt
+        val Vt2 = svdA.Vt(0 to reduced_rank - 1, ::)
+
+        val D = diag(svdA.S)
+        val D2 = D(::, 0 to reduced_rank - 1)
+
+        val A2 = U2 * D2 * Vt2
+
+
+        // We got the reduced rank matrix, let's calculate the average relative errors for each element
+        val diff = A - A2
+        val rel_diff = diff / A
+
+        import math.abs
+
+        val rel_diff_abs = rel_diff.map(xi => abs(xi))
+
+
+        calculate_avg_relative_error(original_rank, rel_diff_abs)
+
+        Vt2
+    }
+
+    def calculate_avg_relative_error(original_rank: Int, rel_diff_abs: DenseMatrix[Double]) = {
+        val sum_rel = sum(rel_diff_abs)
+        val avg_rel_error = sum_rel / (original_rank * original_rank)
+    }
+
+
+    // We use this function to examine each topic, and learn what each topic is about
+
+    def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_v: DenseMatrix[Double]) : Seq[(String, Double)] = {
+        val term_weights = reduced_v.toArray.zipWithIndex
+        val sorted = term_weights.sortBy(-_._1)
+        // select first num_terms elements
+        sorted.take(num_terms)
+    }
+
+
+//    We use this function to evaluate our topic modelling algorithm with respect to its classification of docs.
+    def find_most_related_docs_for_topic(topic: Int, num_docs: Int, reduced_u: DenseMatrix[Double]) : Seq[Seq[String, Double]] = {
+        val doc_weights = reduced_u.toArray.map(_.toArray(topic)).zipWithUniqueId()
+
+        doc_weights.top(num_docs)
+
     }
 
 }
