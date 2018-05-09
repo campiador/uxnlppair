@@ -167,6 +167,11 @@ object TopicModel {
         val svdA = svd(A)
 
         val original_rank = rank(A)
+        println("rank: " +  original_rank  + ", cols: "+ A.cols + ", rows:"  + A.rows +
+          ", A(0,0): " + A(0, 0) + ", A(98,0): " + A(98, 0))
+
+
+        sys.exit(2)
 
         val U2 = svdA.U
 
