@@ -6,7 +6,7 @@ import TopicModel.svd_rank_reduce_and_return_error
 
 object Main extends App {
 
-  val reviews : List[String] = Crawl.getReviewsFromFile("1000")
+  val reviews : List[String] = Crawl.getReviewsFromFile("100")
 
 
    
@@ -35,7 +35,7 @@ object Main extends App {
   // choose k here
   val reduced_rank = 10
 
-  // svd_rank_reduce_and_return_error(actual_matrix, reduced_rank)
+   svd_rank_reduce_and_return_error(tfidfMatrix, reduced_rank)
 
 
 
