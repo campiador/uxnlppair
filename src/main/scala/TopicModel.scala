@@ -50,7 +50,9 @@ object TopicModel {
     val topics: List[Topic] = List("RESPONSE", "BATTERY", "OTHER")
 
 
+    val stopwordsFile = scala.io.Source.fromFile("./src/main/resources/nltk_stop_words.txt")
 
+    var stopwords: List[String] = List() 
 
     def create_object_for_LSA_model(dtmatrix : DenseMatrix[Occurrence]) : String = {
 
@@ -67,7 +69,6 @@ object TopicModel {
         println("\nv:")
         println(v)
         println("\n")
-
 
         return ""
 
@@ -116,10 +117,11 @@ object TopicModel {
 
     def term_by_document_matrix(corpus: List[ReviewPost]) : DenseMatrix[Occurrence] = {
 
+
         /* all the words in the corpus */
         var allTerms = get_all_terms_in_corpus(corpus).sortWith(_ < _)
 
-        println("allTerms: \n" + allTerms.deep.mkString("  "))
+        println("\n\n\nallTerms: \n\n" + allTerms.deep.mkString("  "))
 
         var matrix = DenseMatrix.zeros[Occurrence](corpus.size, allTerms.size)
 
@@ -138,10 +140,15 @@ object TopicModel {
 
     def get_all_terms_in_corpus(corpus: List[ReviewPost]) : Array[Term] = {
 
+        for (line <- stopwordsFile.getLines) {
+            stopwords = stopwords :+ line.toLowerCase
+        }
+
         var allTerms = Array[Term]()
         for (document <- corpus) {
             var termsInDocument = Util.parsePostBody(document)
-            allTerms = allTerms ++ termsInDocument
+            var cleaned_termsInDocument = termsInDocument.filterNot(stopwords.contains(_))
+            allTerms = allTerms ++ cleaned_termsInDocument
         }
         return allTerms.distinct
 
@@ -195,21 +202,21 @@ object TopicModel {
 
     // We use this function to examine each topic, and learn what each topic is about
 
-    def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_v: DenseMatrix[Double]) : Seq[(String, Double)] = {
-        val term_weights = reduced_v.toArray.zipWithIndex
-        val sorted = term_weights.sortBy(-_._1)
-        // select first num_terms elements
-        sorted.take(num_terms)
-    }
+    // def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_v: DenseMatrix[Double]) : Seq[(String, Double)] = {
+    //     val term_weights = reduced_v.toArray.zipWithIndex
+    //     val sorted = term_weights.sortBy(-_._1)
+    //     // select first num_terms elements
+    //     sorted.take(num_terms)
+    // }
 
 
 //    We use this function to evaluate our topic modelling algorithm with respect to its classification of docs.
-    def find_most_related_docs_for_topic(topic: Int, num_docs: Int, reduced_u: DenseMatrix[Double]) : Seq[Seq[String, Double]] = {
-        val doc_weights = reduced_u.toArray.map(_.toArray(topic)).zipWithUniqueId()
+    // def find_most_related_docs_for_topic(topic: Int, num_docs: Int, reduced_u: DenseMatrix[Double]) : Seq[Seq[String, Double]] = {
+    //     val doc_weights = reduced_u.toArray.map(_.toArray(topic)).zipWithUniqueId()
 
-        doc_weights.top(num_docs)
+    //     doc_weights.top(num_docs)
 
-    }
+    // }
 
 }
 

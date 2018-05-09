@@ -35,7 +35,7 @@ object Main extends App {
   // choose k here
   val reduced_rank = 10
 
-  svd_rank_reduce_and_return_error(actual_matrix, reduced_rank)
+  // svd_rank_reduce_and_return_error(actual_matrix, reduced_rank)
 
 
 

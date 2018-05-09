@@ -4,7 +4,7 @@
 		module="uxnlppair-build"
 		revision="0.1.0-SNAPSHOT"
 		status="integration"
-		publication="20180508175540"
+		publication="20180508194232"
 		e:sbtVersion="1.0" e:scalaVersion="2.12"
 	>
 		<description>
