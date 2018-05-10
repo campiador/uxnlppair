@@ -1,20 +1,38 @@
+/*
+    Util.scala
+    Purpose: contains the utility functions
+*/
 object Util {
 
-    /* type aliasing */
     type Topic = String
     type ReviewPost = String
     type Term = String
 
+    /*
+        Purpose: parse the string that contains all the 
+                 reviews into a list of reviews
+    */
     def parsePostBody(postBody: ReviewPost) : List[Term] = {
 
         postBody.split(" +").toList
 
     }
 
+    /*
+        Purpose: round a decimal to reserve 2 digits after
+                 the decimal point
+    */
     def roundToTwoDecimalDigits(num: Double) : Double = {
+
         BigDecimal(num).setScale(2, BigDecimal.RoundingMode.DOWN).toDouble
+
     }
 
-    def printType[T](x:T) :Unit = {println(x.getClass.toString())}
+    /*
+        Purpose: 
+    */
+    def printType[T](x:T) :Unit = {
+        println(x.getClass.toString())
+    }
 
 }

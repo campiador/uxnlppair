@@ -30,14 +30,10 @@
         
 */
 
-
-
 import TopicModel.Occurrence
-
 import scala.math._
 import breeze.linalg.{DenseMatrix, _}
 import breeze.optimize._
-
 import Util.parsePostBody
 
 object TopicModel {
