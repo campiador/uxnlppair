@@ -2,7 +2,7 @@ import scala.math._
 import breeze.linalg._
 import breeze.optimize._
 
-import TopicModel.svd_rank_reduce_and_return_error
+import TopicModel.svd_rank_reduce_and_return_reduced_U_D_Vt
 
 object Main extends App {
 
@@ -36,7 +36,7 @@ object Main extends App {
 
 
 
-   svd_rank_reduce_and_return_error(tfidfMatrix, reduced_rank)
+   svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
 
 
 
