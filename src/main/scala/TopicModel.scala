@@ -47,6 +47,7 @@ object TopicModel {
     type Term = String
     type Occurrence = Double
 
+    var allTerms: Array[Term] = Array()
 
     // var corpus = List[ReviewPost]
     val topics: List[Topic] = List("RESPONSE", "BATTERY", "OTHER")
@@ -117,11 +118,24 @@ object TopicModel {
     }
 
 
+    def getTermByNumber(num: Int) : Term = {
+
+        return allTerms(num)
+    
+    }
+
+    // given a corpus and a num, return the document at the index num
+    def getDocumentByNumber(num: Int, corpus: List[ReviewPost]) : Term = {
+
+        return corpus(num)
+
+    }
+
+
     def term_by_document_matrix(corpus: List[ReviewPost]) : DenseMatrix[Occurrence] = {
 
-
         /* all the words in the corpus */
-        var allTerms = get_all_terms_in_corpus(corpus).sortWith(_ < _)
+        allTerms = get_all_terms_in_corpus(corpus).sortWith(_ < _)
 
         println("\n\n\nallTerms: \n\n" + allTerms.deep.mkString("  "))
 
