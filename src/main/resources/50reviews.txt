@@ -96,3 +96,4 @@ I love Netflix! It has a bunch of shows and movies and changes every month. I'm 
 
 The user experience should be improved... Navigation is very poor and many logical areas are missing like reviews as an example, proper categories charts and so on... Funny that pirated content apps are doing better like popcorn and stremio
 
+I would like it more if you leave the option where you can skip 10 seconds
