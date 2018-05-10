@@ -48,56 +48,29 @@ object TopicModel {
     type Occurrence = Double
 
     var allTerms: Array[Term] = Array()
-
-    // var corpus = List[ReviewPost]
     val topics: List[Topic] = List("RESPONSE", "BATTERY", "OTHER")
-
-
     val stopwordsFile = scala.io.Source.fromFile("./src/main/resources/nltk_stop_words.txt")
-
     var stopwords: List[String] = List() 
 
-    def create_object_for_LSA_model(dtmatrix : DenseMatrix[Occurrence]) : String = {
-
-        println("\nour document-term-matrix looks like: ")
-        println(dtmatrix)
-        println("\n")
-
-        val svd.SVD(u,s,v) = svd(dtmatrix)
-
-        println("\nu:")
-        println(u)
-        println("\ns:")
-        println(s)
-        println("\nv:")
-        println(v)
-        println("\n")
-
-        return ""
-
-    }
-
-
-
-    // tf(w):  number of times the word appears in a  /
-    //         document total number of words in the document
-    // idf(w): log(Number of documents) /
-    //         Number of document that contains word w
+    /* 
+        Purpose: perform TF-IDF
+        tf(w):  number of times the word appears in a  /
+                document total number of words in the document
+        idf(w): log(Number of documents) /
+                Number of document that contains word w
+    */
     def tf_idf_scores(dtmatrix : DenseMatrix[Occurrence], corpus: List[ReviewPost]) : DenseMatrix[Occurrence] = {
 
         var allTerms = get_all_terms_in_corpus(corpus)
-
         var matrix = DenseMatrix.zeros[Occurrence](corpus.size, allTerms.size)
-
+        
         for (m <- 0 to dtmatrix.rows-1) {
             var document = dtmatrix(m, ::)            
             var doc = document.t
-
             var total_words_in_doc = 0.0
             for (n <- 0 to doc.length - 1) { 
                 total_words_in_doc = total_words_in_doc + doc(n) 
             }
-
             for (n <- 0 to doc.length - 1) {
                 var num_of_doc_contains_w = 0
                 for (m <- 0 to dtmatrix.rows-1) {
@@ -110,7 +83,6 @@ object TopicModel {
                 matrix(m, n) = tf * idf
                 // matrix(m, n) = Util.roundToTwoDecimalDigits(tf*idf)
             }
-
         }
 
         return matrix
@@ -118,13 +90,19 @@ object TopicModel {
     }
 
 
+    /*
+        Purpose: get the term name of the matrix based on an index
+    */
     def getTermByNumber(num: Int) : Term = {
 
         return allTerms(num)
     
     }
 
-    // given a corpus and a num, return the document at the index num
+    /*
+        Purpose: given a corpus and a num, return 
+                 the document at the index num
+    */
     def getDocumentByNumber(num: Int, corpus: List[ReviewPost]) : Term = {
 
         return corpus(num)
@@ -132,6 +110,9 @@ object TopicModel {
     }
 
 
+    /*
+        Purpose: to calculuate the term by document frequency matrix
+    */
     def term_by_document_matrix(corpus: List[ReviewPost]) : DenseMatrix[Occurrence] = {
 
         /* all the words in the corpus */
@@ -154,20 +135,20 @@ object TopicModel {
 
     }
 
+    /*
+        Purpose: to get all the terms (reviews) and store in array
+    */
     def get_all_terms_in_corpus(corpus: List[ReviewPost]) : Array[Term] = {
 
-        for (line <- stopwordsFile.getLines) {
-            stopwords = stopwords :+ line
-        }
-
+        for (line <- stopwordsFile.getLines) { stopwords = stopwords :+ line }
 
         var allTerms = Array[Term]()
         for (document <- corpus) {
             var termsInDocument = Util.parsePostBody(document)
             var cleaned_termsInDocument = termsInDocument.filterNot(stopwords.contains(_))
-            
             allTerms = allTerms ++ cleaned_termsInDocument
         }
+
         return allTerms.distinct
 
     }
