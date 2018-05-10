@@ -222,7 +222,7 @@ object TopicModel {
 
         val A_reduced = U_reduced * D_reduced * Vt_reduced
 
-        println(" A_reduced cols: "+ A_reduced.cols + ", rows:"  + A_reduced.rows)
+//        println(" A_reduced cols: "+ A_reduced.cols + ", rows:"  + A_reduced.rows)
 
         // We got the reduced rank matrix, let's calculate the average relative errors for each element
         val diff = A - A_reduced
@@ -234,9 +234,7 @@ object TopicModel {
 
         val err = calculate_avg_relative_error(original_rank, rel_diff_abs)
 
-        println(err)
-
-        Util.printType(U_reduced)
+//        println(err)
 
         (U_reduced, D_reduced, Vt_reduced)
     }
@@ -252,17 +250,32 @@ object TopicModel {
      def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_u: DenseMatrix[Double])  =
      {
 
-//         val u_topic_col = reduced_u(topic, ::)
+         //FIXME, the index should be the row number
+         val u_topic_col = reduced_u(::, topic)
+//         println(u_topic_col)
+//         println(u_topic_col.length)
 
-         val term_weights = reduced_u.toArray.zipWithIndex
+
+//         Util.printType(u_topic_col)
+//         println(u_topic_col.rows + " " + u_topic_col.cols)
+//
+
+         val term_weights = u_topic_col.toArray.zipWithIndex
+
+//         print(term_weights)
 
          val sorted = term_weights.sortBy(-_._1)
+
          // select first num_terms elements
-         val top_x = sorted.take(num_terms)
+         val top_tuples = sorted.take(num_terms)
+//         top_x.foreach { println }
 
-         println(top_x.mkString(" "))
+         val top_term_names = for ((_, term_index ) <- top_tuples) yield getTermByNumber(term_index)
+//
+//         println(top_x.mkString(" "))
+//         sys.exit(2)
 
-         0.0
+         top_term_names
      }
 
 
@@ -276,8 +289,8 @@ object TopicModel {
 
 
 
-    // TODO: Extra work: this can be implemented to predict topic for new documents!
-    def findTopicForDoc(doc: String): Unit = {
+    // TODO: Extra work: this can be implemented to predict topic for new documents! This hard but rewarding.
+    def findTopicForNewDoc(doc: String): Unit = {
 
         0.0
     }
