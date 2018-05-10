@@ -9,6 +9,7 @@ object Main extends App {
   val reviews : List[String] = Crawl.getReviewsFromFile("100")
   // choose k = number of topics here
   val reduced_rank = 10
+  val NUMBER_OF_KEYTERMS_PER_TOPIC = 10
 
 
    
@@ -36,7 +37,20 @@ object Main extends App {
 
 
 
-   svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
+  val (u, d ,v) = svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
+
+
+
+//  val top_terms_for_model = TopicModel.find_most_common_terms_in_topic(3, 10, u)
+
+  for (topic_number <- 0 until reduced_rank) {
+    val key_terms = TopicModel.find_most_common_terms_in_topic(topic_number, NUMBER_OF_KEYTERMS_PER_TOPIC, u)
+
+    println("\nkey terms for topic " + topic_number + ": ")
+    key_terms.foreach {println}
+
+  }
+
 
 
 
