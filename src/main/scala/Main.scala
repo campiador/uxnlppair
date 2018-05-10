@@ -35,8 +35,8 @@ object Main extends App {
   var tfidfMatrix = TopicModel.tf_idf_scores(actual_matrix, reviews)
   println("**** finished creating tfid matrix ****")
 
-  var str = TopicModel.create_object_for_LSA_model(tfidfMatrix)
-  println("**** finished creating object for LSA model matrix ****")
+//  var str = TopicModel.create_object_for_LSA_model(tfidfMatrix)
+//  println("**** finished creating object for LSA model matrix ****")
 
 
   // Explanation of SVD: The A is our actual matrix, we call the reduced one "A2"

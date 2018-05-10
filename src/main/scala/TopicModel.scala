@@ -274,11 +274,11 @@ object TopicModel {
 
 
     // TODO: Extra work: this can be implemented to predict topic for new documents! This hard but rewarding.
-    def findTopicForNewDoc(doc: String): Unit = {
-
-        0.0
-    }
-    
+//    def findTopicForNewDoc(doc: String): Unit = {
+//
+//        0.0
+//    }
+//
 }
 
 
