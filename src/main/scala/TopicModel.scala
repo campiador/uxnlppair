@@ -157,13 +157,15 @@ object TopicModel {
     def get_all_terms_in_corpus(corpus: List[ReviewPost]) : Array[Term] = {
 
         for (line <- stopwordsFile.getLines) {
-            stopwords = stopwords :+ line.toLowerCase
+            stopwords = stopwords :+ line
         }
+
 
         var allTerms = Array[Term]()
         for (document <- corpus) {
             var termsInDocument = Util.parsePostBody(document)
             var cleaned_termsInDocument = termsInDocument.filterNot(stopwords.contains(_))
+            
             allTerms = allTerms ++ cleaned_termsInDocument
         }
         return allTerms.distinct

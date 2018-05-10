@@ -1,5 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/Harry/Desktop/NLP/groupProject/uxnlppair/src/main/scala/Main.scala:26:41: not enough arguments for method getDocumentByNumber: (num: Int, corpus: List[TopicModel.ReviewPost])TopicModel.Term.[0m
-[0m[[0m[31merror[0m] [0m[0mUnspecified value parameter corpus.[0m
-[0m[[0m[31merror[0m] [0m[0m  println(TopicModel.getDocumentByNumber(3))[0m
-[0m[[0m[31merror[0m] [0m[0m                                        ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/Harry/Desktop/NLP/groupProject/uxnlppair/src/main/scala/TopicModel.scala:282:9: a pure expression does nothing in statement position[0m
+[0m[[0m[33mwarn[0m] [0m[0m        0.0[0m
+[0m[[0m[33mwarn[0m] [0m[0m        ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
