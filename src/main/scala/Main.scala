@@ -36,8 +36,7 @@ object Main extends App {
 
 
 
-   svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
-
-
+  val (u, d, v) = svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
+  TopicModel.find_most_common_terms_in_topic(0, 3, u)
 
 }

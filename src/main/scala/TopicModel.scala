@@ -220,6 +220,8 @@ object TopicModel {
 
         println(err)
 
+        Util.printType(U_reduced)
+
         (U_reduced, D_reduced, Vt_reduced)
     }
 
@@ -231,13 +233,21 @@ object TopicModel {
 //
 //    // We use this function to examine each topic, and learn what each topic is about
 //
-//     def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_v: DenseMatrix[Double]) : Seq[(String, Double)] =
-//     {
-//         val term_weights = reduced_v.toArray.zipWithIndex
-//         val sorted = term_weights.sortBy(-_._1)
-//         // select first num_terms elements
-//         sorted.take(num_terms)
-//     }
+     def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_u: DenseMatrix[Double])  =
+     {
+
+//         val u_topic_col = reduced_u(topic, ::)
+
+         val term_weights = reduced_u.toArray.zipWithIndex
+
+         val sorted = term_weights.sortBy(-_._1)
+         // select first num_terms elements
+         val top_x = sorted.take(num_terms)
+
+         println(top_x.mkString(" "))
+
+         0.0
+     }
 
 
 //    We use this function to evaluate our topic modelling algorithm with respect to its classification of docs.
@@ -248,6 +258,13 @@ object TopicModel {
 
     // }
 
+
+
+    // TODO: Extra work: this can be implemented to predict topic for new documents!
+    def findTopicForDoc(doc: String): Unit = {
+
+        0.0
+    }
 }
 
 
