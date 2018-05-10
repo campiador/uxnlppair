@@ -1,3 +1,9 @@
+/*
+    TopicModel.scala
+    Purpose: contains the implementation of LSA topic modeling
+    By: Ge Gao & Behnam Heydarshahi
+*/
+
 /*  
     Three Topics: (1) Responsiveness (UI slow, quick, smooth), 
                   (2) Battery Life (power, shut down)
@@ -37,6 +43,7 @@ import breeze.optimize._
 import Util.parsePostBody
 
 object TopicModel {
+
     /* type aliasing */
     type Topic = String
     type ReviewPost = String
@@ -271,6 +278,7 @@ object TopicModel {
 
         0.0
     }
+    
 }
 
 
