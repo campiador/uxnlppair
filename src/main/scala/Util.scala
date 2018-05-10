@@ -3,6 +3,7 @@
     Purpose: contains the utility functions
     By: Ge Gao & Behnam Heydarshahi
 */
+
 object Util {
 
     type Topic = String
