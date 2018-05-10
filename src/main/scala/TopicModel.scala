@@ -176,43 +176,65 @@ object TopicModel {
 
 
 //    Code to reduce the rank of a matrix through SVD decomposition
-    def svd_rank_reduce_and_return_error(actual_matrix: DenseMatrix[Occurrence], reduced_rank: Int)  = {
-        val A = actual_matrix
+    def svd_rank_reduce_and_return_reduced_U_D_Vt(actual_matrix: DenseMatrix[Occurrence], reduced_rank: Int)
+    = {
+
+        //TODO: should we actually have to transpose in order to get SVD
+        val A = actual_matrix.t
         val svdA = svd(A)
 
         val original_rank = rank(A)
-        println("rank: " +  original_rank  + ", cols: "+ A.cols + ", rows:"  + A.rows +
-          ", A(0,0): " + A(0, 0) + ", A(98,0): " + A(98, 0))
+        println("rank A: " +  original_rank  + ", cols: "+ A.cols + ", rows:"  + A.rows)
+//          + ", A(0,0): " + A(0, 0) + ", A(98,1033): " + A(98, 1033))
 
+        val U  = svdA.U
+        val U_reduced  = svdA.U(::, 0 to reduced_rank-1)
 
-        sys.exit(2)
+        println("U rank: " +  rank(U)  + ", cols: "+ U.cols + ", rows:"  + U.rows)
+        println("U_reduced rank: " +  rank(U_reduced)  + ", cols: "+ U_reduced.cols + ", rows:"  + U_reduced.rows)
+        println()
 
-        val U2 = svdA.U
 
         val S = svdA.S
-        val S2 = svdA.S(0 to reduced_rank - 1)
+        val S_reduced = svdA.S(0 to reduced_rank - 1)
+
+        println("S length: " +  S.length)
+        println("S_reduced length: " +  S_reduced.length)
+
+        val D = diag(S_reduced)
+        val D_reduced = D //D(::, 0 to reduced_rank - 1)
+
+        println("D rank: " +  rank(D)  + ", cols: "+ D.cols + ", rows:"  + D.rows)
+        println("D_reduced rank: " +  rank(D_reduced)  + ", cols: "+ D_reduced.cols + ", rows:"  + D_reduced.rows)
+        println()
+
+
+        //TODO: since we have already transposed the A matrix to go with svd(), determine if we need to transpose Vt here
 
         val Vt = svdA.Vt
-        val Vt2 = svdA.Vt(0 to reduced_rank - 1, ::)
+        val Vt_reduced = svdA.Vt(0 to reduced_rank - 1, ::)
 
-        val D = diag(svdA.S)
-        val D2 = D(::, 0 to reduced_rank - 1)
+        println("Vt rank: " +  rank(Vt)  + ", cols: "+ Vt.cols + ", rows:"  + Vt.rows)
+        println("Vt_reduced rank: " +  rank(Vt_reduced)  + ", cols: "+ Vt_reduced.cols + ", rows:"  + Vt_reduced.rows)
+        println()
 
-        val A2 = U2 * D2 * Vt2
+        val A_reduced = U_reduced * D_reduced * Vt_reduced
 
+        println(" A_reduced cols: "+ A_reduced.cols + ", rows:"  + A_reduced.rows)
 
         // We got the reduced rank matrix, let's calculate the average relative errors for each element
-        val diff = A - A2
+        val diff = A - A_reduced
         val rel_diff = diff / A
 
         import math.abs
 
         val rel_diff_abs = rel_diff.map(xi => abs(xi))
 
+        val err = calculate_avg_relative_error(original_rank, rel_diff_abs)
 
-        calculate_avg_relative_error(original_rank, rel_diff_abs)
+        println(err)
 
-        Vt2
+        (U_reduced, D_reduced, Vt_reduced)
     }
 
     def calculate_avg_relative_error(original_rank: Int, rel_diff_abs: DenseMatrix[Double]) = {
@@ -220,15 +242,16 @@ object TopicModel {
         val avg_rel_error = sum_rel / (original_rank * original_rank)
     }
 
-
-    // We use this function to examine each topic, and learn what each topic is about
-
-    // def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_v: DenseMatrix[Double]) : Seq[(String, Double)] = {
-    //     val term_weights = reduced_v.toArray.zipWithIndex
-    //     val sorted = term_weights.sortBy(-_._1)
-    //     // select first num_terms elements
-    //     sorted.take(num_terms)
-    // }
+//
+//    // We use this function to examine each topic, and learn what each topic is about
+//
+//     def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_v: DenseMatrix[Double]) : Seq[(String, Double)] =
+//     {
+//         val term_weights = reduced_v.toArray.zipWithIndex
+//         val sorted = term_weights.sortBy(-_._1)
+//         // select first num_terms elements
+//         sorted.take(num_terms)
+//     }
 
 
 //    We use this function to evaluate our topic modelling algorithm with respect to its classification of docs.

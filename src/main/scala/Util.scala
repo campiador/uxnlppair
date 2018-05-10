@@ -15,4 +15,6 @@ object Util {
         BigDecimal(num).setScale(2, BigDecimal.RoundingMode.DOWN).toDouble
     }
 
+    def printType[T](x:T) :Unit = {println(x.getClass.toString())}
+
 }
