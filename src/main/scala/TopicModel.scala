@@ -131,12 +131,59 @@ object TopicModel {
             for (n <- 0 to (allTerms.size-1)) {
                 var term = allTerms(n)
                 matrix(m, n) = termsInDocument.count(_ == term)
+                if (matrix(m, n) > 3) {
+                    print(matrix(m,n))
+                    println(" is bigger than 3")
+                }
             }
         }
 
-        return matrix
+        println(matrix)
+
+        // return matrix
+        return remove_lowFreq_terms(matrix)
 
     }
+
+    implicit def arrayToList[A](a: Array[A]) = a.toList
+
+
+    /*
+        Purpose: to get rid of low-frequency terms in the term-doc matrix
+    */
+    def remove_lowFreq_terms(tdmatrix : DenseMatrix[Occurrence]) : DenseMatrix[Occurrence] = {
+
+
+        var threshold = 10
+        var highFreqIndices : List[Int] = List()
+        var highFreqTerms: List[Term] = List()
+
+        for (m <- 0 to (allTerms.length-1)) {
+            var freqInAllDoc = sum(tdmatrix(::, m))
+            if (freqInAllDoc >= threshold) {
+                highFreqIndices = highFreqIndices :+ m
+                highFreqTerms = highFreqTerms :+ allTerms(m)
+            } 
+        }
+
+        var alltermsList = (allTerms.toList).filter(highFreqTerms.contains(_))
+
+        var newAlltermsList : Array[Term] = Array()
+
+        for (term <- alltermsList) {
+            newAlltermsList = newAlltermsList :+ term
+        }
+
+        allTerms = newAlltermsList
+
+        println("new allTerms: ")
+        println(allTerms.deep.mkString("  "))
+
+        return (tdmatrix(::, IndexedSeq(highFreqIndices:_*))).toDenseMatrix
+
+    }
+
+
 
     /*
         Purpose: to get all the terms (reviews) and store in array
@@ -156,12 +203,10 @@ object TopicModel {
 
     }
 
-    def greetFromTopicModel() {
-        println("Greeting from TopicModel")
-    }
 
-
-//    Code to reduce the rank of a matrix through SVD decomposition
+    /*
+        to reduce the rank of a matrix through SVD decomposition
+    */
     def svd_rank_reduce_and_return_reduced_U_D_Vt(actual_matrix: DenseMatrix[Occurrence], reduced_rank: Int)
     = {
 
