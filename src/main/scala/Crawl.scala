@@ -49,7 +49,7 @@ object Crawl {
     var lines = List[String]()
 
     for (line <- original_lines) {
-      println(line)
+//      println(line)
       if (line.length > 1) {
         // lines :+ line
         lines ::= line
