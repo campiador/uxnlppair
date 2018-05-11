@@ -12,7 +12,7 @@ import TopicModel.svd_rank_reduce_and_return_reduced_U_D_Vt
 
 object Main extends App {
 
-  val reviews : List[String] = Crawl.getReviewsFromFile("1000")
+  val reviews : List[String] = Crawl.getReviewsFromFile("500")
   // choose k = number of topics here
   val reduced_rank = 10
   val NUMBER_OF_KEYTERMS_PER_TOPIC = 10
@@ -28,12 +28,9 @@ object Main extends App {
   // var str = TopicModel.create_object_for_LSA_model(tfidfMatrix)
 
 
-  /***********************    matrix on actual data   *************************/
-  println("**** calculating term by doc matrix ****")
-
+  /***********************    matrix on actual data   *************************/ 
   var actual_matrix = TopicModel.term_by_document_matrix(reviews)
   println("**** finished creating term by doc matrix ****")
-  println("**** now calculating tfid matrix ****")
 
   var tfidfMatrix = TopicModel.tf_idf_scores(actual_matrix, reviews)
   println("**** finished creating tfid matrix ****")
@@ -46,8 +43,10 @@ object Main extends App {
 
 
 
-  println("**** now calculating ****")
+
   val (u, d ,v) = svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
+
+
 
 //  val top_terms_for_model = TopicModel.find_most_common_terms_in_topic(3, 10, u)
 

@@ -36,7 +36,16 @@ object Util {
     def printType[T](x:T) :Unit = {
 
         println(x.getClass.toString())
-        
+
     }
+
+    /*
+        Purpose: remove the ith element from array
+    */
+    def remove(a: Array[Term], i: Int): Array[Term] = {
+        val b = a.toBuffer
+        b.remove(i)
+        b.toArray
+    } 
 
 }
