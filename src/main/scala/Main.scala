@@ -24,7 +24,7 @@ object Main extends App {
   var tfidfMatrix = TopicModel.tf_idf_scores(actual_matrix, reviews)
   println("**** finished creating tfid matrix ****")
 
-  // Explanation of SVD: The A is our actual matrix, we call the reduced one "A2"
+  // Explanation of SVD: The A is our actual matrix, we call the reduced one "A_reduced"
   val (u, d ,v) = svd_rank_reduce_and_return_reduced_U_D_Vt(tfidfMatrix, reduced_rank)
 
 

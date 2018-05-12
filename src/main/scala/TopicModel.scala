@@ -220,7 +220,7 @@ object TopicModel {
         println("U_reduced rank: " +  rank(U_reduced)  + ", cols: "+ U_reduced.cols + ", rows:"  + U_reduced.rows)
         println()
 
-        //
+        // We take vector of singular values S, and make a diagonal matrix D
         val S = svdA.S
         val S_reduced = svdA.S(0 to reduced_rank - 1)
 
@@ -239,6 +239,7 @@ object TopicModel {
         println("D_reduced rank: " +  rank(D_reduced)  + ", cols: "+ D_reduced.cols + ", rows:"  + D_reduced.rows)
         println()
 
+        // This is the topic by doc matrix.
         val Vt = svdA.Vt
         val Vt_reduced = svdA.Vt(0 to reduced_rank - 1, ::)
 
