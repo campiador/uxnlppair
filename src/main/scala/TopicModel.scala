@@ -4,10 +4,7 @@
     By: Ge Gao & Behnam Heydarshahi
 */
 
-/*  
-    Three Topics: (1) Responsiveness (UI slow, quick, smooth), 
-                  (2) Battery Life (power, shut down)
-                  (3) Others
+/*
 
     * Get a corpus of documents where each document is a customer review post.
  
@@ -140,8 +137,8 @@ object TopicModel {
 
         println(matrix)
 
-        // return matrix
-        return remove_lowFreq_terms(matrix)
+         return matrix
+//        return remove_lowFreq_terms(matrix)
 
     }
 
@@ -210,13 +207,11 @@ object TopicModel {
     def svd_rank_reduce_and_return_reduced_U_D_Vt(actual_matrix: DenseMatrix[Occurrence], reduced_rank: Int)
     = {
 
-        //TODO: should we actually have to transpose in order to get SVD
         val A = actual_matrix.t
         val svdA = svd(A)
 
         val original_rank = rank(A)
         println("rank A: " +  original_rank  + ", cols: "+ A.cols + ", rows:"  + A.rows)
-//          + ", A(0,0): " + A(0, 0) + ", A(98,1033): " + A(98, 1033))
 
         val U  = svdA.U
         val U_reduced  = svdA.U(::, 0 to reduced_rank-1)
@@ -225,7 +220,7 @@ object TopicModel {
         println("U_reduced rank: " +  rank(U_reduced)  + ", cols: "+ U_reduced.cols + ", rows:"  + U_reduced.rows)
         println()
 
-
+        //
         val S = svdA.S
         val S_reduced = svdA.S(0 to reduced_rank - 1)
 
@@ -233,14 +228,16 @@ object TopicModel {
         println("S_reduced length: " +  S_reduced.length)
 
         val D = diag(S_reduced)
-        val D_reduced = D //D(::, 0 to reduced_rank - 1)
+
+        println(S)
+
+        sys.exit(2)
+
+        val D_reduced = D
 
         println("D rank: " +  rank(D)  + ", cols: "+ D.cols + ", rows:"  + D.rows)
         println("D_reduced rank: " +  rank(D_reduced)  + ", cols: "+ D_reduced.cols + ", rows:"  + D_reduced.rows)
         println()
-
-
-        //TODO: since we have already transposed the A matrix to go with svd(), determine if we need to transpose Vt here
 
         val Vt = svdA.Vt
         val Vt_reduced = svdA.Vt(0 to reduced_rank - 1, ::)
@@ -251,7 +248,6 @@ object TopicModel {
 
         val A_reduced = U_reduced * D_reduced * Vt_reduced
 
-//        println(" A_reduced cols: "+ A_reduced.cols + ", rows:"  + A_reduced.rows)
 
         // We got the reduced rank matrix, let's calculate the average relative errors for each element
         val diff = A - A_reduced
@@ -261,9 +257,7 @@ object TopicModel {
 
         val rel_diff_abs = rel_diff.map(xi => abs(xi))
 
-        val err = calculate_avg_relative_error(original_rank, rel_diff_abs)
-
-//        println(err)
+        val err = calculate_avg_relative_error(original_rank, rel_diff_abs) // print the error if need be
 
         (U_reduced, D_reduced, Vt_reduced)
     }
@@ -279,51 +273,20 @@ object TopicModel {
      def find_most_common_terms_in_topic(topic: Int, num_terms: Int, reduced_u: DenseMatrix[Double])  =
      {
 
-         //FIXME, the index should be the row number
          val u_topic_col = reduced_u(::, topic)
-//         println(u_topic_col)
-//         println(u_topic_col.length)
-
-
-//         Util.printType(u_topic_col)
-//         println(u_topic_col.rows + " " + u_topic_col.cols)
-//
 
          val term_weights = u_topic_col.toArray.zipWithIndex
-
-//         print(term_weights)
 
          val sorted = term_weights.sortBy(-_._1)
 
          // select first num_terms elements
          val top_tuples = sorted.take(num_terms)
-//         top_x.foreach { println }
 
          val top_term_names = for ((_, term_index ) <- top_tuples) yield getTermByNumber(term_index)
-//
-//         println(top_x.mkString(" "))
-//         sys.exit(2)
 
          top_term_names
      }
 
-
-//    We use this function to evaluate our topic modelling algorithm with respect to its classification of docs.
-    // def find_most_related_docs_for_topic(topic: Int, num_docs: Int, reduced_u: DenseMatrix[Double]) : Seq[Seq[String, Double]] = {
-    //     val doc_weights = reduced_u.toArray.map(_.toArray(topic)).zipWithUniqueId()
-
-    //     doc_weights.top(num_docs)
-
-    // }
-
-
-
-    // TODO: Extra work: this can be implemented to predict topic for new documents! This hard but rewarding.
-//    def findTopicForNewDoc(doc: String): Unit = {
-//
-//        0.0
-//    }
-//
 }
 
 
